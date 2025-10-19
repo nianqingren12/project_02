@@ -44,7 +44,7 @@ class UserAuth {
     }
 }
 
-public class Xscj2 {
+public class Student {
 
     public static void main(String[] args) {
         // 系统设置
