@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+// 成绩管理类
 class GradeManager {
     private float[] grades;
     private int count;
@@ -32,6 +33,7 @@ class GradeManager {
     }
 }
 
+// 用户认证类
 class UserAuth {
     private String password;
 
@@ -44,14 +46,15 @@ class UserAuth {
     }
 }
 
+// 主类
 public class Student {
 
     public static void main(String[] args) {
         // 系统设置
         String correctUsername = "赵昌昊";
         String correctPassword = "2024061142";
-        float[] grades = new float[500];  // 用来存成绩
-        int gradeCount = 0;  // 记录已有成绩数量
+        float[] grades = new float[500];
+        int grades_index = 0;  //成绩数组索引
 
         // 显示欢迎界面
         System.out.println("*****************");
@@ -90,40 +93,42 @@ public class Student {
             System.out.println("0. 退出系统");
             System.out.print("请选择操作：");
 
-            // 检查输入是否为整数
+            // 取数判断
             while (!input.hasNextInt()) {
                 System.out.println("错误：请输入数字！");
-                input.nextLine(); // 清空输入缓冲区
+                input.nextLine(); 
                 System.out.print("请选择操作：");
             }
             int choice = input.nextInt();
-            input.nextLine(); // 清除缓冲区残留的换行符
+            input.nextLine(); 
 
             switch(choice) {
-                case 1:  // 添加成绩
+                // 添加成绩
+                case 1:  
                     System.out.print("请输入要添加的成绩：");
                     while (!input.hasNextFloat()) {
                         System.out.println("错误：请输入数字！");
-                        input.nextLine(); // 清空输入缓冲区
+                        input.nextLine();
                         System.out.print("请输入要添加的成绩：");
                     }
                     float newGrade = input.nextFloat();
-                    input.nextLine(); // 清除缓冲区残留的换行符
-                    grades[gradeCount] = newGrade;
-                    gradeCount++;
+                    input.nextLine();
+                    grades[grades_index] = newGrade;
+                    grades_index++;
                     System.out.println("添加成功！");
                     break;
 
-                case 2:  // 插入成绩
-                    System.out.print("请输入要插入的位置(0-" + gradeCount + ")：");
+                // 插入成绩
+                case 2:  
+                    System.out.print("请输入要插入的位置(0-" + grades_index + ")：");
                     while (!input.hasNextInt()) {
                         System.out.println("错误：请输入数字！");
                         input.nextLine(); // 清空输入缓冲区
-                        System.out.print("请输入要插入的位置(0-" + gradeCount + ")：");
+                        System.out.print("请输入要插入的位置(0-" + grades_index + ")：");
                     }
                     int pos = input.nextInt();
                     input.nextLine(); // 清除缓冲区残留的换行符
-                    if(pos < 0 || pos > gradeCount) {
+                    if(pos < 0 || pos > grades_index) {
                         System.out.println("位置无效！");
                         break;
                     }
@@ -138,16 +143,17 @@ public class Student {
                     input.nextLine(); // 清除缓冲区残留的换行符
 
                     // 把后面的成绩往后移
-                    for(int i = gradeCount; i > pos; i--) {
+                    for(int i = grades_index; i > pos; i--) {
                         grades[i] = grades[i-1];
                     }
 
                     grades[pos] = newGrade;
-                    gradeCount++;
+                    grades_index++;
                     System.out.println("插入成功！");
                     break;
 
-                case 3:  // 查找成绩
+                // 查找成绩    
+                case 3:  
                     System.out.print("请输入要查找的成绩：");
                     while (!input.hasNextFloat()) {
                         System.out.println("错误：请输入数字！");
@@ -158,7 +164,7 @@ public class Student {
                     input.nextLine(); // 清除缓冲区残留的换行符
                     boolean found = false;
 
-                    for(int i = 0; i < gradeCount; i++) {
+                    for(int i = 0; i < grades_index; i++) {
                         if(grades[i] == searchGrade) {
                             System.out.println("找到成绩，位置：" + i);
                             found = true;
@@ -170,9 +176,10 @@ public class Student {
                     }
                     break;
 
-                case 4:  // 排序成绩 - 使用简单的冒泡排序
-                    for(int i = 0; i < gradeCount-1; i++) {
-                        for(int j = 0; j < gradeCount-i-1; j++) {
+                // 排序成绩 - 使用简单的冒泡排序    
+                case 4:  
+                    for(int i = 0; i < grades_index-1; i++) {
+                        for(int j = 0; j < grades_index-i-1; j++) {
                             if(grades[j] > grades[j+1]) {
                                 // 交换成绩
                                 float temp = grades[j];
@@ -184,7 +191,8 @@ public class Student {
                     System.out.println("成绩排序完成！");
                     break;
 
-                case 5:  // 删除成绩
+                // 删除成绩    
+                case 5:  
                     System.out.print("请输入要删除的成绩：");
                     while (!input.hasNextFloat()) {
                         System.out.println("错误：请输入数字！");
@@ -195,13 +203,13 @@ public class Student {
                     input.nextLine(); // 清除缓冲区残留的换行符
                     int deleteCount = 0;
 
-                    for(int i = 0; i < gradeCount; i++) {
+                    for(int i = 0; i < grades_index; i++) {
                         if(grades[i] == deleteGrade) {
                             // 把后面的成绩往前移
-                            for(int j = i; j < gradeCount-1; j++) {
+                            for(int j = i; j < grades_index-1; j++) {
                                 grades[j] = grades[j+1];
                             }
-                            gradeCount--;
+                            grades_index--;
                             deleteCount++;
                             i--;  // 因为移了一个，所以要检查当前位置的新成绩
                         }
@@ -214,18 +222,20 @@ public class Student {
                     }
                     break;
 
-                case 6:  // 显示所有成绩
-                    if(gradeCount == 0) {
+                // 显示所有成绩    
+                case 6:  
+                    if(grades_index == 0) {
                         System.out.println("还没有任何成绩记录！");
                     } else {
                         System.out.println("所有成绩：");
-                        for(int i = 0; i < gradeCount; i++) {
+                        for(int i = 0; i < grades_index; i++) {
                             System.out.println((i+1) + ". " + grades[i]);
                         }
                     }
                     break;
 
-                case 0:  // 退出系统
+                // 退出系统    
+                case 0:  
                     System.out.println("谢谢使用，再见！");
                     return;
 
